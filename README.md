@@ -5,6 +5,17 @@ This project documents our experimental setup and research work using **OpenAirI
 
 ---
 
+## 📂 Folder Structure:
+
+- `docs/` - Documentation, diagrams, lab setup guides
+- `configs/` - Configuration files for OAI, USRP, Core, etc.
+- `scripts/` - Installation and deployment scripts
+- `ran/` - RAN-specific configurations, logs, notes
+- `core/` - Core network configurations (Open5GS, OAI CN)
+- `results/` - Logs, test results, network captures
+
+---
+
 ## 🎯 Project Goals:
 
 - Deploy a functional **5G Standalone (SA)** network using **OpenAirInterface**
