@@ -2,6 +2,7 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Atualiza o sistema e instala dependências básicas
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
@@ -12,8 +13,17 @@ RUN apt-get update && \
     python3 \
     python3-pip \
     python3-dev \
-    software-properties-common && \
+    software-properties-common \
+    sudo \
+    wget \
+    iproute2 \
+    net-tools \
+    iputils-ping \
+    ca-certificates \
+    gnupg \
+    curl && \
     \
+    # Adiciona o repositório UHD
     add-apt-repository -y ppa:ettusresearch/uhd && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -25,10 +35,30 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Non Root user creation
-RUN useradd -ms /bin/bash oaiuser
+# Cria um usuário não-root para rodar o ambiente
+RUN useradd -ms /bin/bash oaiuser && \
+    usermod -aG sudo oaiuser && \
+    echo "oaiuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
 USER oaiuser
+WORKDIR /home/oaiuser
 
-WORKDIR /app
+# Clona o repositório do OpenAirInterface RAN (você pode trocar por tag ou branch específica)
+RUN git clone https://gitlab.eurecom.fr/oai/openairinterface5g.git && \
+    cd openairinterface5g && \
+    git checkout develop && \
+    git submodule init && \
+    git submodule update --recursive
 
-# CMD ["bash"]
+WORKDIR /home/oaiuser/openairinterface5g
+
+# Instala dependências específicas do OAI (útil para build manual ou futuro script)
+RUN cd cmake_targets && \
+    ./build_oai -I --eNB --gNB
+
+# Pronto para build: o usuário pode usar:
+# cd cmake_targets && ./build_oai -w USRP --gNB
+
+# Entrypoint padrão
+CMD ["/bin/bash"]
+
