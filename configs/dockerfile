@@ -1,10 +1,7 @@
-# Use uma imagem base limpa do Ubuntu para manter o container leve
 FROM ubuntu:22.04
 
-# Evita prompts interativos durante a instalação
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Instala as dependências e o UHD
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
@@ -17,24 +14,21 @@ RUN apt-get update && \
     python3-dev \
     software-properties-common && \
     \
-    # Adiciona o repositório PPA da Ettus Research para UHD
     add-apt-repository -y ppa:ettusresearch/uhd && \
     apt-get update && \
-    \
-    # Instala o UHD e as ferramentas de host
     apt-get install -y --no-install-recommends \
     libuhd-dev \
     uhd-host && \
     \
-    # Baixa as imagens de firmware/FPGA do UHD/Parte critica**NAO ALTERAR PORFAVOR**
     uhd_images_downloader && \
     \
-    # Limpa pacotes e caches para reduzir o tamanho da imagem
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Define o diretório de trabalho padrão dentro do container
+# Non Root user creation
+RUN useradd -ms /bin/bash oaiuser
+USER oaiuser
+
 WORKDIR /app
 
-# Define o comando padrão ao iniciar o container (abre um shell bash)
-CMD ["bash"]
+# CMD ["bash"]
