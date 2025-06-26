@@ -1,1 +1,1 @@
-### Oi Miguel
+### How to config 5g Core Network 
