@@ -1,4 +1,4 @@
-# 📡 OpenAirInterface + USRP ((Docker) EN
+# 📡 OpenAirInterface + USRP (Docker) EN
 
 This project provides a ready-to-use Docker image for compiling and running OpenAirInterface (OAI) with USRP support (via UHD). Ideal for lab environments using USRP B210 or similar.
 
