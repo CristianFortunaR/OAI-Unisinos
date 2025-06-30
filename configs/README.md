@@ -86,6 +86,51 @@ docker rmi oai-usrp
 
 ---
 
+# OpenAirInterface (OAI) Deployment Explained
+
+This document clarifies the relationship and interaction between the Docker components in your OAI-Unisinos repository, specifically concerning the `configs` and `core` folders.
+
+## Understanding the Deployment Structure
+
+It's important to note that you **would not** have containers created from the `core` step running *inside* a container created from the `configs` step. Docker containers are designed to be isolated, and the OAI deployment typically involves distinct components communicating over a network.
+
+Here's a breakdown of the likely setup based on your repository's structure:
+
+### 1. `configs` step (OAI with USRP)
+
+* The Dockerfile located in your `configs` folder is used to build a Docker image. This image is intended for compiling and running **OpenAirInterface (OAI) with USRP (Universal Software Radio Peripheral) support**.
+* When you create a container from this image, it will typically run the **OAI Radio Access Network (RAN) component**, such as a gNodeB (gNB) for 5G or an eNodeB (eNB) for 4G. This container is responsible for the radio interface and communication with User Equipment (UEs).
+* **Result:** A single container dedicated to the OAI RAN functionality.
+
+### 2. `core` step (5G Core Network)
+
+* The `core` folder contains configuration files, most notably Docker Compose files like `docker-compose-basic-nrf.yaml`.
+* This Docker Compose file is used to define and orchestrate **multiple, distinct Docker containers** that collectively form the **5G Core Network**. These containers represent individual 5G Network Functions (NFs) such as:
+    * **NRF (Network Repository Function)**
+    * **AMF (Access and Mobility Management Function)**
+    * **SMF (Session Management Function)**
+    * **UDM (Unified Data Management)**
+    * **UDR (Unified Data Repository)**
+    * **AUSF (Authentication Server Function)**
+    * **UPF (User Plane Function)**
+    * And other related services (e.g., MySQL for database).
+* **Result:** A set of interconnected containers, each running a specific 5G Core Network function.
+
+## How They Interact
+
+Instead of nesting, these two major components – the OAI RAN container (from `configs`) and the OAI 5G Core Network containers (from `core`) – operate as **separate, interconnected entities**.
+
+They are configured to communicate with each other over a network, simulating a complete mobile network environment. The gNB/eNB (RAN) will connect to the AMF/MME (Core), and data traffic will flow through the UPF/SGW-U.
+
+**In summary, you will have:**
+
+1.  A container running the OAI gNB/eNB (built from your `configs` Docker image).
+2.  A collection of containers running the OAI 5G Core Network functions (orchestrated by Docker Compose from your `core` folder).
+
+These two parts are designed to be deployed independently and then linked via networking to establish a fully functional OpenAirInterface cellular network.
+
+---
+
 ## 🧪 Next Steps (optional)
 
 - Install and configure a 5G Core (Open5GS or OAI Core)
