@@ -94,8 +94,6 @@ This document clarifies the relationship and interaction between the Docker comp
 
 It's important to note that you **would not** have containers created from the `core` step running *inside* a container created from the `configs` step. Docker containers are designed to be isolated, and the OAI deployment typically involves distinct components communicating over a network.
 
-Here's a breakdown of the likely setup based on your repository's structure:
-
 ### 1. `configs` step (OAI with USRP)
 
 * The Dockerfile located in your `configs` folder is used to build a Docker image. This image is intended for compiling and running **OpenAirInterface (OAI) with USRP (Universal Software Radio Peripheral) support**.
