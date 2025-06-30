@@ -1,4 +1,3 @@
-````markdown
 # OAI Core Network Detailed Setup and Deployment Guide
 
 This repository provides configurations and scripts for setting up and deploying the OpenAirInterface (OAI) 5G Core Network. This guide will walk you through the necessary steps for configuration and deployment, and explain the Docker Compose file used for the core network services.
@@ -164,8 +163,3 @@ The `docker-compose-basic-nrf.yaml` file defines the services, networks, and con
 For more detailed information and advanced deployment scenarios, please refer to the official OAI documentation:
 
   * [Basic Deployment using Docker Compose](https://gitlab.eurecom.fr/oai/cn5g/oai-cn5g-fed/-/blob/master/docs/DEPLOY_SA5G_BASIC_DEPLOYMENT.md)
-
-<!-- end list -->
-
-```
-```
