@@ -170,49 +170,6 @@ docker build -t oai-usrp .
 
 ---
 
-# Implantação do OpenAirInterface (OAI) Explicada
-
-Este documento esclarece a relação e a interação entre os componentes Docker no seu repositório OAI-Unisinos, especificamente em relação às pastas `configs` e `core`.
-
-## Compreendendo a Estrutura da Implantação
-
-É importante notar que você **não** teria contêineres criados a partir da etapa `core` sendo executados *dentro* de um contêiner criado a partir da etapa `configs`. Os contêineres Docker são projetados para serem isolados, e a implantação do OAI tipicamente envolve componentes distintos se comunicando por uma rede.
-
-### 1. Etapa `configs` (OAI com USRP)
-
-* O Dockerfile localizado na sua pasta `configs` é usado para construir uma imagem Docker. Esta imagem é destinada à compilação e execução do **OpenAirInterface (OAI) com suporte a USRP (Universal Software Radio Peripheral)**.
-* Ao criar um contêiner a partir desta imagem, ele normalmente executará o **componente OAI Radio Access Network (RAN)**, como um gNodeB (gNB) para 5G ou um eNodeB (eNB) para 4G. Este contêiner é responsável pela interface de rádio e comunicação com os User Equipments (UEs).
-* **Resultado:** Um único contêiner dedicado à funcionalidade OAI RAN.
-
-### 2. Etapa `core` (Rede de Núcleo 5G)
-
-* A pasta `core` contém arquivos de configuração, notavelmente arquivos Docker Compose como `docker-compose-basic-nrf.yaml`.
-* Este arquivo Docker Compose é usado para definir e orchestrar **múltiplos e distintos contêineres Docker** que, coletivamente, formam a **Rede de Núcleo 5G**. Estes contêineres representam funções individuais da Rede 5G (NFs), tais como:
-    * **NRF (Network Repository Function)**
-    * **AMF (Access and Mobility Management Function)**
-    * **SMF (Session Management Function)**
-    * **UDM (Unified Data Management)**
-    * **UDR (Unified Data Repository)**
-    * **AUSF (Authentication Server Function)**
-    * **UPF (User Plane Function)**
-    * E outros serviços relacionados (por exemplo, MySQL para banco de dados).
-* **Resultado:** Um conjunto de contêineres interconectados, cada um executando uma função específica da Rede de Núcleo 5G.
-
-## Como Eles Interagem
-
-Em vez de aninhamento, esses dois principais componentes – o contêiner OAI RAN (da `configs`) e os contêineres da Rede de Núcleo OAI 5G (da `core`) – operam como **entidades separadas e interconectadas**.
-
-Eles são configurados para se comunicar entre si por uma rede, simulando um ambiente de rede móvel completo. O gNB/eNB (RAN) se conectará ao AMF/MME (Core), e o tráfego de dados fluirá através do UPF/SGW-U.
-
-**Em resumo, você terá:**
-
-1. Um contêiner executando o OAI gNB/eNB (construído a partir da sua imagem Docker `configs`).
-2. Uma coleção de contêineres executando as funções da Rede de Núcleo OAI 5G (orquestrados pelo Docker Compose da sua pasta `core`).
-
-Essas duas partes são projetadas para serem implantadas independentemente e, em seguida, interligadas via rede para estabelecer uma rede celular OpenAirInterface totalmente funcional.
-
----
-
 ## 🚀 Executando o Container
 
 Use o comando abaixo para iniciar o container com acesso à USB e rede do host:
@@ -273,6 +230,49 @@ Para remover a imagem criada:
 ```bash
 docker rmi oai-usrp
 ```
+
+---
+
+# Implantação do OpenAirInterface (OAI) Explicada
+
+Este documento esclarece a relação e a interação entre os componentes Docker no seu repositório OAI-Unisinos, especificamente em relação às pastas `configs` e `core`.
+
+## Compreendendo a Estrutura da Implantação
+
+É importante notar que você **não** teria contêineres criados a partir da etapa `core` sendo executados *dentro* de um contêiner criado a partir da etapa `configs`. Os contêineres Docker são projetados para serem isolados, e a implantação do OAI tipicamente envolve componentes distintos se comunicando por uma rede.
+
+### 1. Etapa `configs` (OAI com USRP)
+
+* O Dockerfile localizado na sua pasta `configs` é usado para construir uma imagem Docker. Esta imagem é destinada à compilação e execução do **OpenAirInterface (OAI) com suporte a USRP (Universal Software Radio Peripheral)**.
+* Ao criar um contêiner a partir desta imagem, ele normalmente executará o **componente OAI Radio Access Network (RAN)**, como um gNodeB (gNB) para 5G ou um eNodeB (eNB) para 4G. Este contêiner é responsável pela interface de rádio e comunicação com os User Equipments (UEs).
+* **Resultado:** Um único contêiner dedicado à funcionalidade OAI RAN.
+
+### 2. Etapa `core` (Rede de Núcleo 5G)
+
+* A pasta `core` contém arquivos de configuração, notavelmente arquivos Docker Compose como `docker-compose-basic-nrf.yaml`.
+* Este arquivo Docker Compose é usado para definir e orchestrar **múltiplos e distintos contêineres Docker** que, coletivamente, formam a **Rede de Núcleo 5G**. Estes contêineres representam funções individuais da Rede 5G (NFs), tais como:
+    * **NRF (Network Repository Function)**
+    * **AMF (Access and Mobility Management Function)**
+    * **SMF (Session Management Function)**
+    * **UDM (Unified Data Management)**
+    * **UDR (Unified Data Repository)**
+    * **AUSF (Authentication Server Function)**
+    * **UPF (User Plane Function)**
+    * E outros serviços relacionados (por exemplo, MySQL para banco de dados).
+* **Resultado:** Um conjunto de contêineres interconectados, cada um executando uma função específica da Rede de Núcleo 5G.
+
+## Como Eles Interagem
+
+Em vez de aninhamento, esses dois principais componentes – o contêiner OAI RAN (da `configs`) e os contêineres da Rede de Núcleo OAI 5G (da `core`) – operam como **entidades separadas e interconectadas**.
+
+Eles são configurados para se comunicar entre si por uma rede, simulando um ambiente de rede móvel completo. O gNB/eNB (RAN) se conectará ao AMF/MME (Core), e o tráfego de dados fluirá através do UPF/SGW-U.
+
+**Em resumo, você terá:**
+
+1. Um contêiner executando o OAI gNB/eNB (construído a partir da sua imagem Docker `configs`).
+2. Uma coleção de contêineres executando as funções da Rede de Núcleo OAI 5G (orquestrados pelo Docker Compose da sua pasta `core`).
+
+Essas duas partes são projetadas para serem implantadas independentemente e, em seguida, interligadas via rede para estabelecer uma rede celular OpenAirInterface totalmente funcional.
 
 ---
 
