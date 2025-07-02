@@ -67,11 +67,11 @@ Navigate to the `docker-compose` directory within your `oai-cn5g-fed` clone and 
   * To start the core:
     ```shell
     cd path-to/oai-cn5g-fed/docker-compose
-    python3 core-networks.py --type start-basic --scenario 1
+    python3 core-network.py --type start-basic --scenario 1
     ```
   * To stop the core:
     ```shell
-    python3 core-networks.py --type stop-basic --scenario 1
+    python3 core-network.py --type stop-basic --scenario 1
     ```
 
 ## 3\. Understanding the Docker Compose Configuration (`docker-compose-basic-nrf.yaml`)
