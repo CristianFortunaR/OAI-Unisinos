@@ -13,6 +13,7 @@ This project documents our experimental setup and research work using **OpenAirI
 - `ran/` - RAN-specific configurations, logs, notes
 - `core/` - Core network configurations (Open5GS, OAI CN)
 - `results/` - Logs, test results, network captures
+- `test/` - Tutorials for performing tests
 
 ---
 
