@@ -1,6 +1,6 @@
 # OAI Core Network Detailed Setup and Deployment Guide
 
-This repository provides configurations and scripts for setting up and deploying the OpenAirInterface (OAI) 5G Core Network. This guide will walk you through the necessary steps for configuration and deployment, and explain the Docker Compose file used for the core network services.
+This repository provides configurations and scripts for setting up and basic-deploying the OpenAirInterface (OAI) 5G Core Network. This guide will walk you through the necessary steps for configuration and deployment, and explain the Docker Compose file used for the core network services.
 
 ## 1. Set Up
 
