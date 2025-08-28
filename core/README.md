@@ -26,26 +26,7 @@ git clone [https://gitlab.eurecom.fr/oai/cn5g/oai-cn5g-fed.git](https://gitlab.e
 git checkout v1.5.0
 ```
 
-### 1.3 Changing Core Settings
-
-This step involves integrating custom database configurations and Docker Compose files from this repository into the cloned `oai-cn5g-fed` directory. This ensures that the core network services use the specific settings tailored for this project.
-
-```shell
-git clone [https://github.com/eduardoschulz/Interoperabilidade.git](https://github.com/eduardoschulz/Interoperabilidade.git)
-cd Interoperabilidade/core-networks/OAI-CN/
-
-rm -r ~/oai-cn5g-fed/docker-compose/database
-cp -r database ~/oai-cn5g-fed/docker-compose/database
-
-mv docker-compose-basic-nrf.yaml ~/oai-cn5g-fed/docker-compose/
-```
-
-  * `git clone https://github.com/eduardoschulz/Interoperabilidade.git`: Clones the `Interoperabilidade` repository which contains custom configurations.
-  * `rm -r ~/oai-cn5g-fed/docker-compose/database`: Removes the default database directory in the `oai-cn5g-fed` setup.
-  * `cp -r database ~/oai-cn5g-fed/docker-compose/database`: Copies the custom database configurations (e.g., `oai_db2.sql`) from this repository to replace the default ones.
-  * `mv docker-compose-basic-nrf.yaml ~/oai-cn5g-fed/docker-compose/`: Moves the custom Docker Compose file into the `oai-cn5g-fed`'s `docker-compose` directory.
-
-### 1.4 gNB-host Configurations
+### 1.3 gNB-host Configurations
 
 If you are using a separate gNB (Next-Generation NodeB) host, you must configure a static route to the internal Docker network of the OAI Core Network. This enables the gNB to establish a connection with the core network components.
 
