@@ -58,6 +58,8 @@ rm -r ~/openairinterface5g-develop-doc-tutorial_resources-oai-cn5g ~/oai-cn5g.zi
 cd ~/oai-cn5g
 docker compose up -d
 ```
+---
+
 ##▶️ 2. Executar o OAI CN5G
 
 ### 2.1 Iniciar o OAI CN5G
@@ -65,6 +67,7 @@ docker compose up -d
 cd ~/oai-cn5g
 docker compose pull
 ```
+
 ### 2.2 Parar o OAI CN5G
 ```bash
 cd ~/oai-cn5g
