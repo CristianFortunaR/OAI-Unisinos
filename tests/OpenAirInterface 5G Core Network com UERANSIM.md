@@ -1,6 +1,6 @@
 # Guia Detalhado de Implantação — OpenAirInterface 5G Core Network com UERANSIM
 
-Este repositório apresenta instruções para configuração, compilação e execução do **OpenAirInterface (OAI) 5G Core Network** integrado ao **UERANSIM**, visando testes de conectividade, desempenho e validação da rede.
+Este repositório apresenta instruções para configuração, compilação e execução do **OpenAirInterface (OAI) 5G Core Network** integrado ao **UERANSIM**, visando testes de conectividade, desempenho e validação da rede. Este tutorial é recomendado para estudar o Core5G da OAI, e entender seus fundamentos.
 
 ---
 
