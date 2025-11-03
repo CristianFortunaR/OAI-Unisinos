@@ -43,7 +43,7 @@ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin d
 sudo usermod -a -G docker $(whoami)
 
 reboot
-
+``` 
 ### 1.2 Arquivos de configuração do OAI CN5G
 
 ```bash
@@ -51,3 +51,22 @@ wget -O ~/oai-cn5g.zip https://gitlab.eurecom.fr/oai/openairinterface5g/-/archiv
 unzip ~/oai-cn5g.zip
 mv ~/openairinterface5g-develop-doc-tutorial_resources-oai-cn5g/doc/tutorial_resources/oai-cn5g ~/oai-cn5g
 rm -r ~/openairinterface5g-develop-doc-tutorial_resources-oai-cn5g ~/oai-cn5g.zip
+```
+### 1.3 Baixar as imagens Docker do OAI CN5G
+
+```bash
+cd ~/oai-cn5g
+docker compose up -d
+```
+##▶️ 2. Executar o OAI CN5G
+
+### 2.1 Iniciar o OAI CN5G
+```bash
+cd ~/oai-cn5g
+docker compose pull
+```
+### 2.2 Parar o OAI CN5G
+```bash
+cd ~/oai-cn5g
+docker compose down
+```
