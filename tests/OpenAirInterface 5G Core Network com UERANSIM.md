@@ -6,7 +6,7 @@ Este repositório apresenta instruções para configuração, compilação e exe
 
 ## 1. Requisitos
 
-Antes de iniciar, é necessário concluir o **Basic Deployment** do Core do OAI:
+Antes de iniciar, é necessário concluir o **Basic Deployment** do Core do OAI versão 1.5:
 
 * [OAI Core Network Detailed Setup and Deployment Guide](https://github.com/CristianFortunaR/OAI-Unisinos/tree/main/core)
 
