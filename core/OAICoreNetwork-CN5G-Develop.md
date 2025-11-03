@@ -73,3 +73,19 @@ docker compose pull
 cd ~/oai-cn5g
 docker compose down
 ```
+---
+## 3. Testar o OAI CN5G
+
+### 3.1 Verificar os containers com o comando: 
+```bash
+sudo docker ps
+```
+
+### 3.2 Verificar os logs:
+```bash
+sudo docker logs (nome do container) -f
+```
+Exemplo: 
+```bash
+sudo docker logs oai-amf -f
+```
