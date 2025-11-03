@@ -60,7 +60,7 @@ docker compose up -d
 ```
 ---
 
-##▶️ 2. Executar o OAI CN5G
+## ▶️ 2. Executar o OAI CN5G
 
 ### 2.1 Iniciar o OAI CN5G
 ```bash
