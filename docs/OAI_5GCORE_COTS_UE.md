@@ -185,3 +185,24 @@ Exemplo de teste de ping no UE:
 ```bash
 docker exec -it oai-ext-dn ping 12.0.0.2
 ```
+---
+
+### Observações sobre Estabilidade
+
+> ⚠️ **Atenção:**  
+> O sistema implementado com **OAI CN5G, gNB e UE COTS** ainda é experimental e pode apresentar instabilidades.  
+> Mesmo seguindo todos os passos corretamente, é possível que a rede **não funcione em algumas tentativas**.
+
+#### Procedimento em caso de falha
+
+Se ocorrer alguma falha na conexão ou no registro do UE:
+
+1. **Reinicie todo o sistema**, incluindo:  
+   - O **Core 5G (OAI CN5G)**  
+   - O **gNB**  
+   - O **UE (celular)**  
+2. Verifique novamente a configuração do SIM e da APN antes de tentar reconectar.  
+
+> 🔄 **Dica:**  
+> Reinicializações repetidas podem ser necessárias até que o UE consiga se registrar corretamente na rede 5G.
+> Sempre acompanhe os logs.
