@@ -1,4 +1,4 @@
-## Introdução
+## OAI_5GCore_nrUE
 
 Este tutorial tem como objetivo demonstrar o processo completo para a **configuração e execução de uma rede 5G funcional**, composta por um **Core Network (CN5G)**, um **gNB** e um **UE** utilizando o ecossistema **OpenAirInterface (OAI)**.
 
