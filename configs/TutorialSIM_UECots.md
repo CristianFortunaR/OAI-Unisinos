@@ -1,42 +1,41 @@
-# Programação de SIM/UICC (Sysmocom + Osmocom / pysim)
+# SIM/UICC Programming (Sysmocom + Osmocom / pysim)
 
-**Objetivo:** neste guia mostramos como programar um cartão SIM/UICC reprogramável (ex.: cartão Sysmocom compatível) utilizando as ferramentas da comunidade Osmocom (`pysim`). 
+**Objective:** this guide explains how to program a reprogrammable SIM/UICC card (e.g., Sysmocom-compatible card) using the Osmocom community tools (`pysim`).  
 ---
 
-## Introdução
+## Introduction
 
-Os cartões utilizados neste cenário são cartões reprogramáveis compatíveis com as ferramentas Osmocom. Utilizamos o pacote **pysim** para gravar (flash) novas identidades — IMSI, ICCID, chaves (K), OPc/OP, SPN e demais parâmetros — no cartão UICC/SIM que será usado pelo COTS UE (celular 5G).
+The cards used in this scenario are reprogrammable cards compatible with Osmocom tools. We use the **pysim** package to flash new identities — IMSI, ICCID, keys (K), OPc/OP, SPN, and other parameters — into the UICC/SIM card that will be used by the COTS UE (5G phone).
 
-Este documento descreve desde a preparação do ambiente até o comando de programação e verificação básica. Os exemplos abaixo assumem um ambiente Ubuntu e um leitor de smartcard conectado ao PC.
-
----
-
-## Avisos importantes
-
-- **Dados sensíveis:** IMSI, K, OP/OPc e ICCID são dados sensíveis. **NÃO** publique esses valores em repositórios públicos ou logs.  
-- **Risco:** programar cartões pode torná-los inutilizáveis se os parâmetros estiverem incorretos. Faça testes em cartões destinados a desenvolvimento.
+This document covers the entire process from environment setup to the programming command and basic verification. The examples below assume an Ubuntu environment and a smartcard reader connected to the PC.
 
 ---
 
-## Pré-requisitos
+## Important Warnings
 
-- Computador com **Ubuntu 22.04/24.04 LTS** (ou equivalente Debian-based).  
-- Leitor de smartcard USB compatível com PC/SC (ex.: ACS ACR122U ou leitor similar).  
-- Cartão SIM/UICC reprogramável (ex.: cartão Sysmocom compatível).  
-- Acesso root/sudo no sistema para instalar pacotes e trabalhar com o leitor.  
-- Conexão à internet para baixar pacotes e clonar repositórios.
+- **Sensitive data:** IMSI, K, OP/OPc, and ICCID are sensitive values. **DO NOT** publish them in public repositories or logs.  
+- **Risk:** programming cards may render them unusable if parameters are incorrect. Perform tests on cards intended for development.
 
 ---
 
-## Instalação do ambiente (pysim + dependências)
+## Prerequisites
 
- Atualize pacotes e instale dependências básicas:
+- Computer running **Ubuntu 22.04/24.04 LTS** (or equivalent Debian-based).  
+- USB smartcard reader compatible with PC/SC (e.g., ACS ACR122U or similar).  
+- Reprogrammable SIM/UICC card (e.g., Sysmocom-compatible card).  
+- Root/sudo access to install packages and operate the reader.  
+- Internet connection to download packages and clone repositories.
+
+---
+
+## Environment Installation (pysim + dependencies)
+
+Update system packages and install the basic dependencies:
 
 ```bash
 sudo apt update
 sudo apt install -y git pcscd libpcsclite-dev python3 python3-setuptools python3-pip python3-pyscard
-```
-```bash
+
 git clone https://github.com/osmocom/pysim
 cd pysim
 sudo apt-get install --no-install-recommends \
@@ -46,8 +45,9 @@ sudo apt-get install --no-install-recommends \
     python3-pyscard \
     python3-pip
 pip3 install -r requirements.txt
+
 ```
-## Comando de programação — Exemplo
+## Programming Command — Example
 
 Abaixo está um exemplo do comando utilizado para programar o cartão com o utilitário pySim-prog.py. Ajuste os parâmetros (IMSI, ICCID, K, OPc, MCC, MNC, SPN, etc.) conforme seu caso.
 ```bash
