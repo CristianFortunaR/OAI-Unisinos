@@ -1,13 +1,14 @@
-# 💡 Tutoriais do Core 5G (5GC)
+# 5G Core (5GC) Tutorials
 
-Esta seção do repositório é dedicada aos guias de instalação e configuração de diferentes versões da Rede Principal 5G (5G Core).
+This section of the repository is dedicated to installation and configuration guides for different versions of the 5G Core Network.
 
-## 🧠 O que é o Core 5G?
+## What is the 5G Core?
 
-O Core é o núcleo de uma rede 5G, responsável por gerenciar os microsserviços da rede. Ele gerencia a troca de dados, a conexão, a mobilidade e também implementa toda a camada de segurança
+The Core is the central part of a 5G network, responsible for managing the network’s microservices.  
+It handles data exchange, connectivity, mobility, and also implements the entire security layer.
 
-## 📚 Sobre estes Tutoriais
+## About These Tutorials
 
-Os guias nesta pasta são os tutoriais de referência para instalar, compilar e executar diferentes versões do Core 5G, da **OpenAirInterface (OAI)**.
+The guides in this folder are reference tutorials for installing, compiling, and running different versions of the 5G Core from **OpenAirInterface (OAI)**.
 
-Para mais informações, acesse o repositório oficial da OpenAirInterface: [OpenAirInterface](https://gitlab.eurecom.fr/oai)
+For more information, visit the official OpenAirInterface repository: [OpenAirInterface](https://gitlab.eurecom.fr/oai)
