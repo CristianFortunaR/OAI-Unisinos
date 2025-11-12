@@ -1,7 +1,7 @@
 # 📡 OAI-Unisinos: OpenAirInterface 5G/6G Lab Setup
 
 Welcome to the OAI-Unisinos repository!  
-This project documents our experimental setup and research work using **OpenAirInterface (OAI)** for **5G/6G radio networks**, deployed at **Universidade do Vale do Rio dos Sinos (Unisinos)**.
+This project documents our experimental setup and research work using **OpenAirInterface (OAI)** for **5G radio networks**, deployed at **Universidade do Vale do Rio dos Sinos (Unisinos)**.
 
 ---
 
