@@ -1,62 +1,61 @@
 ## OAI-5GCore with nrUE
 
-Este tutorial tem como objetivo demonstrar o processo completo para a **configuração e execução de uma rede 5G funcional**, composta por um **Core Network (CN5G)**, um **gNB** e um **UE** utilizando o ecossistema **OpenAirInterface (OAI)**.
+This tutorial aims to demonstrate the complete process for **configuring and running a functional 5G network**, composed of a **Core Network (CN5G)**, a **gNB**, and a **UE**, using the **OpenAirInterface (OAI)** ecosystem.
 
-O cenário apresentado utiliza um **USRP B210** como estação base (gNB) e um segundo computador, também equipado com um USRP, atuando como **UE (User Equipment)**.  
-Assim, em vez de um dispositivo comercial, o UE será emulado por outro host rodando o software do **OAI nrUE**.
+The scenario presented uses a **USRP B210** as the base station (**gNB**) and a second computer, also equipped with a USRP, acting as the **UE (User Equipment)**.  
+Thus, instead of a commercial device, the UE will be emulated by another host running the **OAI nrUE** software.
 
-Ao longo deste tutorial, serão abordadas todas as etapas necessárias para a execução do ambiente, incluindo a instalação dos pré-requisitos, a construção dos módulos do OAI e a inicialização dos componentes principais da rede 5G.
+Throughout this tutorial, all the necessary steps for setting up the environment will be covered, including the installation of prerequisites, building the OAI modules, and initializing the main components of the 5G network.
 
 ---
+## System Requirements
 
-##  Requisitos do Sistema
+To run this complete 5G environment, you will need **two computers** and at least **two USRP radios** (e.g., USRP B210).  
+Each machine will play a specific role within the setup, as described below.
 
-Para a execução deste ambiente 5G completo, serão necessários **dois computadores** e, no mínimo, **dois rádios USRP** (por exemplo, USRP B210). Cada máquina desempenhará um papel específico dentro do cenário, conforme descrito abaixo.
+### Computer 1 — OAI Core Network (CN5G) + gNB
 
-### Computador 1 — OAI Core Network (CN5G) + gNB
+This computer will be responsible for running both the **Core Network (CN5G)** and the **gNB (Next Generation NodeB)**.
 
-Este computador será responsável por executar o **Core Network (CN5G)** e o **gNB (Next Generation NodeB)**.
+**Recommended specifications:**
+- **Operating System:** Ubuntu 24.04 LTS  
+- **Processor:** 8 cores x86_64 @ 3.5 GHz  
+- **RAM:** 32 GB  
+- **Radio Device:** USRP B210 (or equivalent)  
 
-**Especificações recomendadas:**
-- **Sistema operacional:** Ubuntu 24.04 LTS  
-- **Processador:** 8 núcleos x86_64 @ 3.5 GHz  
-- **Memória RAM:** 32 GB  
-- **Dispositivo de rádio:** USRP B210 (ou equivalente)  
-
-Para instalação e configuração do núcleo 5G, siga o tutorial detalhado disponível em:  
+For installation and configuration of the 5G Core, follow the detailed tutorial available at:  
 👉 [OAI Core Network — CN5G (Develop)](https://github.com/CristianFortunaR/OAI-Unisinos/blob/v1/core/OAICoreNetwork-CN5G-Develop.md)
 
 ---
+### Computer 2 — OAI nrUE
 
-### Computador 2 — OAI nrUE
+The second computer will be used to emulate the **UE (User Equipment)**, also connected to a USRP.  
+This machine will simulate the behavior of a real 5G device.
 
-O segundo computador será utilizado para emular o **UE (User Equipment)**, também conectado a um USRP.  
-Este equipamento será o responsável por simular o comportamento de um dispositivo 5G real.
-
-**Especificações recomendadas:**
-- **Sistema operacional:** Ubuntu 24.04 LTS  
-- **Processador:** 8 núcleos x86_64 @ 3.5 GHz  
-- **Memória RAM:** 8 GB  
-- **Dispositivo de rádio:** USRP B210 (ou equivalente)
-
----
-
-###  Configuração do UHD
-
-Tanto o computador do **Core/gNB** quanto o do **UE** precisam ter o **UHD (USRP Hardware Driver)** devidamente instalado e configurado.  
-O processo de instalação e compilação pode ser seguido conforme o guia oficial abaixo:
-
-👉 [Tutorial de Instalação do UHD](https://github.com/CristianFortunaR/OAI-Unisinos/blob/v1/configs/TutorialUHD.md)
+**Recommended specifications:**
+- **Operating System:** Ubuntu 24.04 LTS  
+- **Processor:** 8 cores x86_64 @ 3.5 GHz  
+- **RAM:** 8 GB  
+- **Radio Device:** USRP B210 (or equivalent)
 
 ---
 
-## Construção do OAI gNB e OAI nrUE
+### UHD Configuration
 
-Após a instalação do UHD, prossiga com a obtenção e compilação dos componentes principais do OpenAirInterface.
+Both the **Core/gNB** and the **UE** computers must have the **UHD (USRP Hardware Driver)** properly installed and configured.  
+The installation and compilation process can be followed in the official guide below:
 
-### Compilação do OAI gNB e OAI nrUE
+👉 [UHD Installation Tutorial](https://github.com/CristianFortunaR/OAI-Unisinos/blob/v1/configs/TutorialUHD.md)
 
-Baixe o código-fonte mais recente do **OpenAirInterface 5G**, instale as dependências e realize a compilação dos módulos necessários para o gNB e o nrUE nos dois computadores. 
+---
+
+## Building OAI gNB and OAI nrUE
+
+After installing UHD, proceed to obtain and compile the main components of OpenAirInterface.
+
+### Compiling OAI gNB and OAI nrUE
+
+Download the latest **OpenAirInterface 5G** source code, install the required dependencies, and compile the necessary modules for both the gNB and nrUE on each computer.
 
 ```bash
 # Obter o código-fonte do OpenAirInterface
@@ -75,44 +74,45 @@ sudo apt install -y libforms-dev libforms-bin
 cd ~/openairinterface5g/cmake_targets
 ./build_oai -w USRP --ninja --nrUE --gNB --build-lib "nrscope" -C
 ``` 
-### Executar o OAI CN5G
+### Running OAI CN5G
 
-Inicie o Core Network 5G utilizando o Docker Compose previamente configurado.
+Start the 5G Core Network using the preconfigured Docker Compose setup:
 ```bash
 cd ~/oai-cn5g
 docker compose up -d
-```
-### Executar o OAI gNB
+``` 
+### Running OAI gNB
 
-Neste cenário será usado o USRP B210
+In this setup, the USRP B210 will be used as the radio interface:
+
 ```bash 
 cd ~/openairinterface5g/cmake_targets/ran_build/build
 sudo ./nr-softmodem -O ../../../targets/PROJECTS/GENERIC-NR-5GC/CONF/gnb.sa.band78.fr1.106PRB.usrpb210.conf --gNBs.[0].min_rxtxtime 6 -E --continuous-tx
 ```
 
-### Rodar o OAI nrUE
+### Running OAI nrUE
 
-Este processo deve ser realizado em um segundo computador (host diferente do gNB), rodando Ubuntu 24.04 LTS e conectado ao seu próprio USRP B210.
+This process must be executed on a **second computer** (different host from the gNB), running **Ubuntu 24.04 LTS** and connected to its own **USRP B210**.
 ```bash
 cd ~/openairinterface5g/cmake_targets/ran_build/build
 sudo ./nr-uesoftmodem -r 106 --numerology 1 --band 78 -C 3619200000 --ue-fo-compensation -E --uicc0.imsi 001010000000001
 ```
-### Verificação da Conexão
+### Connection Verification
 
-Após a inicialização bem-sucedida do CN5G, gNB e UE, é possível verificar a conectividade fim a fim através de testes de ping.
+After successfully starting the CN5G, gNB, and UE, you can verify end-to-end connectivity through ping tests.
 
-## Teste — Comunicação entre UE e CN5G
+## Test 1 — Communication Between UE and CN5G
 
-No host do UE, execute:
+On the UE host, run:
 ```bash
 ping 192.168.70.135 -I oaitun_ue1
 ```
 
-## Teste 2 — Acesso à Internet (Google)
+## Test 2 — Internet Access (Google)
 
-Após confirmar a comunicação com o core, teste o acesso externo:
+Once communication with the core is confirmed, test external connectivity:
 ```bash
 ping google.com -I oaitun_ue1
 ```
-Para mais informações, acesse o repositório oficial:  
+For more details, check the official documentation:
 👉 [https://gitlab.eurecom.fr/oai/openairinterface5g/-/blob/develop/doc/NR_SA_Tutorial_OAI_nrUE.md#5-oai-ue](https://gitlab.eurecom.fr/oai/openairinterface5g/-/blob/develop/doc/NR_SA_Tutorial_OAI_nrUE.md#5-oai-ue)
