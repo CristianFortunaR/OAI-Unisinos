@@ -49,7 +49,7 @@ pip3 install -r requirements.txt
 ```
 ## Programming Command — Example
 
-Abaixo está um exemplo do comando utilizado para programar o cartão com o utilitário pySim-prog.py. Ajuste os parâmetros (IMSI, ICCID, K, OPc, MCC, MNC, SPN, etc.) conforme seu caso.
+Below is an example of the command used to program the card with the `pySim-prog.py` utility. Adjust the parameters (IMSI, ICCID, K, OPc, MCC, MNC, SPN, etc.) according to your case.
 ```bash
 ./pySim-prog.py \
   -p 0 \
@@ -62,16 +62,17 @@ Abaixo está um exemplo do comando utilizado para programar o cartão com o util
   -k fec86ba6eb707ed08905757b1bb44b8f \
   --opc=C42449363BBAD02B66D16BC975D77CC1
 ```
-### Significado dos parâmetros (resumo)
+### Meaning of Parameters (Summary)
 
-- `-p 0` — porta / índice do leitor (ex.: leitor 0).  
-- `-n "TelecomUNISINOS"` — **SPN** (*Service Provider Name*) — nome do operador.  
-- `-a 1234567` — parâmetro administrativo usado pelo utilitário (ADM).  
-- `-s 8988211000000280969` — **ICCID** do cartão (identificador de cartão).  
+- `-p 0` — port / reader index (e.g., reader 0).  
+- `-n "TelecomUNISINOS"` — **SPN** (*Service Provider Name*) — operator name.  
+- `-a 1234567` — administrative parameter used by the utility (ADM).  
+- `-s 8988211000000280969` — **ICCID** of the card (card identifier).  
 - `--mcc=001` — **MCC** (*Mobile Country Code*).  
 - `--mnc=01` — **MNC** (*Mobile Network Code*).  
-- `--imsi=001010000000001` — **IMSI** (identidade do assinante).  
-- `-k <K>` — **K** (chave do assinante / *Ki*) usada para autenticação.  
-- `--opc=<OPc>` — **OPc** (ou `--op`, dependendo da ferramenta) — parâmetro relacionado ao esquema de autenticação.  
+- `--imsi=001010000000001` — **IMSI** (subscriber identity).  
+- `-k <K>` — **K** (subscriber key / *Ki*) used for authentication.  
+- `--opc=<OPc>` — **OPc** (or `--op`, depending on the tool) — parameter related to the authentication scheme.  
 
-> **Nota:** dependendo da versão do `pysim` que você usa, a flag para OPc pode ser `--opc` ou `--op`. Consulte `./pySim-prog.py --help` para confirmar.
+> **Note:** Depending on the version of `pysim` you are using, the flag for OPc may be `--opc` or `--op`. Check with `./pySim-prog.py --help` to confirm.
+
