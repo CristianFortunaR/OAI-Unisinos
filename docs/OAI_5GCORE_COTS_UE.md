@@ -1,134 +1,139 @@
 ## OAI-5GCORE with COTS_UE
 
-Este tutorial descreve como configurar e executar uma rede 5G **monolítica** utilizando os componentes do **OpenAirInterface (OAI)** — especificamente o **OAI CN5G** (core) e o **OAI gNB** — em um **único computador**.  
+This tutorial describes how to configure and run a **monolithic 5G network** using the **OpenAirInterface (OAI)** components — specifically the **OAI CN5G** (core) and the **OAI gNB** — on a **single computer**.  
 
-O objetivo é demonstrar o funcionamento completo de uma rede 5G Standalone (SA), conectando-a a um **COTS UE (Commercial Off-The-Shelf User Equipment)**, ou seja, um **celular comercial compatível com 5G**.  
+The goal is to demonstrate the complete operation of a 5G Standalone (SA) network by connecting it to a **COTS UE (Commercial Off-The-Shelf User Equipment)**, i.e., a **commercial 5G-compatible smartphone**.  
 
-O tutorial cobre desde a preparação do ambiente e compilação dos componentes até os testes de conectividade com o dispositivo 5G real.
+The tutorial covers the entire process from environment preparation and component compilation to connectivity testing with a real 5G device.
 
 ---
-## Requisitos do Sistema
 
-Antes de iniciar a configuração, verifique se seu ambiente atende aos requisitos mínimos de hardware e software para executar a rede 5G monolítica com o OpenAirInterface.
+## System Requirements
 
-### Hardware mínimo recomendado
+Before starting, make sure your environment meets the minimum hardware and software requirements to run a monolithic 5G network with OpenAirInterface.
 
-- **Computador único** para execução conjunta do OAI CN5G (core) e OAI gNB:  
-  - **Sistema operacional:** Ubuntu 24.04 LTS  
-  - **CPU:** 8 núcleos x86_64 @ 3.5 GHz  
-  - **Memória RAM:** 32 GB  
-  - **Interface USRP:** B210, N300 ou X300  
-  - Identifique corretamente a interface de rede do USRP e configure-a no arquivo do gNB.  
-  - **Equipamento de usuário (UE):** neste cenário foi utilizado um **celular 5G comercial (COTS UE)**, equipado com um **chip reprogramável da Sysmocom**,
+### Recommended Minimum Hardware
 
-### Dependências e tutoriais de referência
+- **Single computer** running both OAI CN5G (core) and OAI gNB:  
+  - **Operating system:** Ubuntu 24.04 LTS  
+  - **CPU:** 8 cores x86_64 @ 3.5 GHz  
+  - **RAM:** 32 GB  
+  - **USRP Interface:** B210, N300, or X300  
+  - Properly identify and configure the USRP network interface in the gNB configuration file.  
+  - **User Equipment (UE):** in this setup, a **commercial 5G smartphone (COTS UE)** equipped with a **Sysmocom reprogrammable SIM card** was used.
 
-Este tutorial assume que você já seguiu as instruções básicas de instalação e configuração dos seguintes componentes:
+### Dependencies and Reference Tutorials
+
+This tutorial assumes you have already completed the basic installation and configuration steps of the following components:
 
 - **UHD (USRP Hardware Driver)**  
-  Guia completo disponível em:  
-   [Tutorial UHD - OAI Unisinos](https://github.com/CristianFortunaR/OAI-Unisinos/blob/v1/configs/TutorialUHD.md)
+  Full guide available at:  
+  [Tutorial UHD - OAI Unisinos](https://github.com/CristianFortunaR/OAI-Unisinos/blob/v1/configs/TutorialUHD.md)
 
 - **OAI Core Network (CN5G)**  
-  Guia de instalação e configuração disponível em:  
-   [OAI Core Network - CN5G Develop](https://github.com/CristianFortunaR/OAI-Unisinos/blob/v1/core/OAICoreNetwork-CN5G-Develop.md)
+  Installation and configuration guide available at:  
+  [OAI Core Network - CN5G Develop](https://github.com/CristianFortunaR/OAI-Unisinos/blob/v1/core/OAICoreNetwork-CN5G-Develop.md)
 
-Esses tutoriais fornecem as bases necessárias para que o ambiente esteja pronto antes de prosseguir com a execução do gNB e a conexão com o COTS UE.
+These tutorials provide the necessary foundation to prepare the environment before running the gNB and connecting the COTS UE.
 
 ---
-## Compilação do OAI gNB
 
-Nesta etapa, será feita a **obtenção do código-fonte do OpenAirInterface 5G (OAI)** e a **compilação do gNB (gNodeB)** com suporte ao hardware USRP.
+## OAI gNB Compilation
 
-### Passos para compilação:
+In this step, you will **download the OpenAirInterface 5G (OAI)** source code and **compile the gNB (gNodeB)** with USRP hardware support.
 
-Clone o repositório oficial do OAI:
+### Compilation Steps:
+
+Clone the official OAI repository:
 
 ```bash
-# Obter o código-fonte do OAI
+# Get OAI source code
 git clone https://gitlab.eurecom.fr/oai/openairinterface5g.git ~/openairinterface5g
 cd ~/openairinterface5g
 git checkout develop
-# Instalar dependências do OAI
+# Install OAI dependencies
 cd ~/openairinterface5g/cmake_targets
 ./build_oai -I
-# Compilar o OAI gNB
+# Compile OAI gNB
 cd ~/openairinterface5g/cmake_targets
 ./build_oai -w USRP --ninja --gNB -C
 ```
 ---
 
-## Configuração do UE (User Equipment)
+## UE (User Equipment) Configuration
 
-Antes de executar o **Core 5G (OAI CN5G)** e o **gNB**, é necessário realizar a configuração do **UE (User Equipment)**, ou seja, o **celular 5G** que será conectado à rede.
+Before running the 5G Core (OAI CN5G) and the gNB, you need to configure the UE (User Equipment), that is, the 5G smartphone that will connect to the network.
 
-Essa etapa é fundamental para garantir que o dispositivo consiga autenticar-se corretamente e estabelecer comunicação com a rede 5G.  
-Para isso, será preciso configurar:
+This step is essential to ensure that the device can authenticate correctly and establish communication with the 5G network.
+You will need to configure:
 
-- O **chip SIM reprogramável** (Sysmocom), com os parâmetros de autenticação corretos;  
-- A **APN (Access Point Name)** no próprio celular, de forma que a conexão de dados seja direcionada ao núcleo 5G configurado no ambiente.
+- The reprogrammable Sysmocom SIM card, with the correct authentication parameters;
 
-Nas próximas etapas, serão descritos todo o tutorial para a configuração do UE.
+- The APN (Access Point Name) on the phone, so the data connection routes properly to the configured 5G Core.
 
-## Programação do SIM Card (Sysmocom) 
+The next sections describe the complete UE configuration process.
 
-Antes de iniciar a execução da rede 5G, é necessário **programar o chip SIM** que será utilizado pelo dispositivo 5G (COTS UE).
+## SIM Card Programming (Sysmocom)
 
-Neste cenário, foi utilizado um **celular 5G** equipado com um **chip reprogramável da Sysmocom**.  
-O processo de programação desse cartão é essencial para definir parâmetros como IMSI, MCC, MNC, e chaves de autenticação (K e OPC), garantindo a autenticação correta do dispositivo na rede.
+Before running the 5G network, you must program the SIM card that will be used by the 5G device (COTS UE).
 
-O passo a passo completo para realizar a programação do SIM pode ser consultado no tutorial abaixo:
+In this setup, a 5G smartphone with a Sysmocom reprogrammable SIM card was used.
+The SIM programming process is essential to define parameters such as IMSI, MCC, MNC, and authentication keys (K and OPC), ensuring proper authentication of the device in the network.
 
-📘 **Tutorial de Programação do SIM (Sysmocom)**  
+The full step-by-step guide is available below:
+
+**SIM Programming Tutorial (Sysmocom)**  
 👉 [TutorialSIM_UECots.md](https://github.com/CristianFortunaR/OAI-Unisinos/blob/v1/configs/TutorialSIM_UECots.md)
 
 > ⚠️ **Importante:** Certifique-se de realizar a programação do SIM Card antes de iniciar o processo de conexão do celular à rede 5G, pois o chip precisa estar configurado com as credenciais corretas do OAI Core.
 
-## Gerenciamento dos Registros de UE no Banco de Dados
+## Managing UE Records in the Database
 
-Após programar o SIM Card, é necessário garantir que as informações do **UE (User Equipment)** estejam registradas corretamente no banco de dados do **OAI Core Network (CN5G)**.
+Make sure to program the SIM card before attempting to connect the phone to the 5G network, as the SIM must be configured with the correct **OAI Core credentials**.
 
-Você pode optar por duas abordagens:
+You can choose between:
 
-1. **Adicionar novos registros de UE** manualmente no banco de dados, ou  
-2. **Utilizar um registro já existente**, previamente configurado.
+1. **Manually adding new UE records to the database, or**  
+2. **Using an existing pre-configured record.**.
 
-Para realizar essa configuração, acesse o arquivo SQL responsável pelos dados da rede: 
+To modify these settings, open the SQL file responsible for the network data:
 ```bash
 oai-cn5g/database/oai_db.sql
 ```
-Dentro desse arquivo, localize as seções correspondentes aos dados de autenticação e de gerenciamento de sessão do usuário:
+Inside this file, locate the sections related to user authentication and session management:
 
 - `-- Dumping data for table \`SessionManagementSubscriptionData\``
 - `-- Dumping data for table \`AuthenticationSubscription\``
 
-Essas tabelas armazenam as informações de assinatura, IMSI, chaves de autenticação (K e OPC), e parâmetros necessários para a autenticação do UE na rede.
+These tables store subscription details, IMSI, authentication keys (K and OPC), and parameters needed for UE authentication.
 
-> ⚠️ **Dica:** Certifique-se de que os valores programados no chip Sysmocom (IMSI, MCC, MNC, K e OPC) coincidam com os valores registrados no banco de dados.  
-> Caso contrário, o dispositivo não conseguirá autenticar-se no núcleo 5G.
+> ⚠️ **TIP:** Make sure that the values programmed in the Sysmocom SIM (IMSI, MCC, MNC, K, and OPC) match those stored in the database.  
+> Otherwise, the device will fail to authenticate with the 5G Core.
 
-## Configuração da APN
+## APN Configuration
 
-Antes de conectar o celular à rede 5G, é necessário configurar a **APN (Access Point Name)** para garantir que o tráfego de dados seja roteado corretamente para o núcleo 5G (OAI CN5G).
+Before connecting the phone to the 5G network, it is necessary to configure the **APN (Access Point Name)** to ensure that the data traffic is properly routed to the 5G Core (OAI CN5G).
 
-O passo a passo completo dessa configuração está documentado no tutorial abaixo:
+The complete step-by-step guide for this configuration is available in the tutorial below:
 
-📘 **Tutorial de Configuração da APN no Celular 5G**  
+📘 **5G Phone APN Configuration Tutorial**  
 👉 [TutorialAPN.md](https://github.com/CristianFortunaR/OAI-Unisinos/blob/v1/configs/TutorialAPN.md)
 
-> ⚠️ **Importante:**  
-> Verifique se a APN utiliza o mesmo **MCC**, **MNC** e **DNN** configurados no chip Sysmocom e no arquivo `config.yaml` do OAI Core.  
-> Esses valores precisam coincidir para que o UE consiga autenticar-se corretamente na rede.
+> ⚠️ **Important:**  
+> Make sure the APN uses the same **MCC**, **MNC**, and **DNN** configured in the Sysmocom SIM card and in the `config.yaml` file of the OAI Core.  
+> These values must match for the UE to successfully authenticate with the 5G network.
+
+---
 
 ## Run OAI CN5G and OAI gNB
 
-Feito a configuração do **UE**, poderemos executar o **Core 5G (OAI CN5G)** e o **gNB**.
+After configuring the **UE**, we can proceed to run the **Core 5G (OAI CN5G)** and the **gNB**.
 
 ---
 
 ### Run OAI CN5G
 
-Para iniciar o Core 5G:
+To start the 5G Core:
 
 ```bash
 cd ~/oai-cn5g
@@ -140,69 +145,73 @@ cd ~/openairinterface5g/cmake_targets/ran_build/build
 sudo ./nr-softmodem -O ../../../targets/PROJECTS/GENERIC-NR-5GC/CONF/gnb.sa.band78.fr1.106PRB.usrpb210.conf -E --continuous-tx
 ```
 
-## Conexão do UE à Rede 5G
+## UE Connection to the 5G Network
 
-Após configurar o **UE** (SIM e APN) e iniciar o **Core 5G** e o **gNB**, o próximo passo é conectar o celular à rede 5G.
+After configuring the **UE** (SIM and APN) and starting the **5G Core (OAI CN5G)** and the **gNB**, the next step is to connect the mobile device to the 5G network.
 
-### Passos para conexão:
+### Connection Steps:
 
-1. No celular, busque **manualmente as redes disponíveis**.  
-2. Selecione a rede correspondente à combinação de **MCC e MNC** configurada anteriormente (por exemplo, MCC=001 e MNC=01).  
+1. On the mobile device, **manually search for available networks**.  
+2. Select the network corresponding to the configured **MCC and MNC** combination (for example, MCC=001 and MNC=01).  
 
-> ⚠️ **Importante:**  
-> Certifique-se de que o celular esteja forçando conexão exclusiva à **rede 5G**, caso contrário ele pode tentar se conectar a redes 4G ou 3G próximas.
+> ⚠️ **Important:**  
+> Make sure the mobile device is forced to connect **exclusively to the 5G network**, otherwise it may attempt to connect to nearby 4G or 3G networks.
 
-### Acompanhamento da Conexão
+### Monitoring the Connection
 
-Podemos monitorar o registro do UE e o tráfego de conexão através dos **logs do gNB e do Core**.
+You can monitor the UE registration and connection traffic through the **gNB and Core logs**.
 
 #### Logs do Core
 
-Para acessar os logs de um container Docker do Core:
+#### Core Logs
+
+To access the logs of a Core Docker container:
 
 ```bash
-docker ps #Para acessar o nome dos containers
-docker logs <nome_do_container> -f
+docker ps # To list the container names
+docker logs <container_name> -f
 ```
-Recomendado acessar os logs do AMF, para realizar debugs. 
+It is recommended to check the AMF logs for debugging purposes:
+
 ```bash
 docker logs oai-amf -f
 ```
-#### Logs do gNB
+#### gNB Losg
 
-Os logs do gNB podem ser visualizados diretamente no terminal onde o nr-softmodem foi executado.
-Eles permitem acompanhar o processo de registro do UE e identificar possíveis falhas de autenticação ou configuração.
+The gNB logs can be viewed directly in the terminal where the nr-softmodem was executed.
+These logs allow you to monitor the UE registration process and identify possible authentication or configuration issues.
 
-### 6. Teste da Conexão do UE
+### UE Connection Test
 
-Após o UE se registrar corretamente na rede 5G, é possível testar a conectividade:
+After the UE successfully registers on the 5G network, you can test the connectivity:
 
-1. **Acessar a Internet** diretamente pelo celular (UE), navegando ou utilizando aplicativos que dependam de dados.  
-2. **Testar a conectividade via ping** a partir do próprio host do UE, utilizando o **IP atribuído pelo Core**.
+1. **Access the Internet** directly from the mobile device (UE), by browsing or using data-dependent apps.
+2. **Test connectivity via ping** from the UE’s host, using the **IP assigned by the Core**.
 
-Exemplo de teste de ping no UE:
+Example of a ping test from the UE:
 
 ```bash
 docker exec -it oai-ext-dn ping 12.0.0.2
 ```
 ---
 
-### Observações sobre Estabilidade
+### Stability Notes
 
-> ⚠️ **Atenção:**  
-> O sistema implementado com **OAI CN5G, gNB e UE COTS** ainda é experimental e pode apresentar instabilidades.  
-> Mesmo seguindo todos os passos corretamente, é possível que a rede **não funcione em algumas tentativas**.
+> ⚠️ **Warning:**  
+> The system implemented with **OAI CN5G, gNB, and COTS UE** is still experimental and may present instabilities.  
+> Even when following all the steps correctly, the network **may not function properly in some attempts**.
 
-#### Procedimento em caso de falha
+#### Troubleshooting Procedure
 
-Se ocorrer alguma falha na conexão ou no registro do UE:
+If a connection or UE registration failure occurs:
 
-1. **Reinicie todo o sistema**, incluindo:  
-   - O **Core 5G (OAI CN5G)**  
-   - O **gNB**  
-   - O **UE (celular)**  
-2. Verifique novamente a configuração do SIM e da APN antes de tentar reconectar.  
+1. **Restart the entire system**, including:  
+   - The **5G Core (OAI CN5G)**  
+   - The **gNB**  
+   - The **UE (mobile device)**  
+2. Double-check the SIM and APN configurations before trying to reconnect.
 
-> 🔄 **Dica:**  
-> Reinicializações repetidas podem ser necessárias até que o UE consiga se registrar corretamente na rede 5G.
-> Sempre acompanhe os logs.
+> 🔄 **Tip:**  
+> Multiple restarts may be required until the UE successfully registers on the 5G network.  
+> Always monitor the logs carefully.
+
